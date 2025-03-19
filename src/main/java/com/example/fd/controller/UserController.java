@@ -1,6 +1,6 @@
 package com.example.fd.controller;
 
-import com.example.fd.entity.User;
+import com.example.fd.DTO.UserDTO;
 import com.example.fd.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,25 +19,25 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user){
-        User newUser = userService.createUser(user);
-        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO user){
+        UserDTO newUserDTO = userService.createUser(user);
+        return new ResponseEntity<>(newUserDTO, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers(){
-        List<User> users = userService.getAllUsers();
-        return new ResponseEntity<>(users, HttpStatus.OK);
+    public ResponseEntity<List<UserDTO>> getAllUsers(){
+        List<UserDTO> usersDTO = userService.getAllUsers();
+        return new ResponseEntity<>(usersDTO, HttpStatus.OK);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id){
-        User user = userService.getUserByID(id);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id){
+        UserDTO userDTO = userService.getUserByID(id);
+        return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUserById(@PathVariable Long id, @RequestBody User user){
-        User updatedUser = userService.updateUserById(id,user);
-        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    public ResponseEntity<UserDTO> updateUserById(@PathVariable Long id, @RequestBody UserDTO userDTO){
+        UserDTO updatedUserDTO = userService.updateUserById(id,userDTO);
+        return new ResponseEntity<>(updatedUserDTO, HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUserById(@PathVariable Long id){
