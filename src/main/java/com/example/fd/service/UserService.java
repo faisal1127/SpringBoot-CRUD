@@ -1,6 +1,7 @@
 package com.example.fd.service;
 
 import com.example.fd.DTO.UserDTO;
+import com.example.fd.Mapper.AutoMapper;
 import com.example.fd.Mapper.UserMapper;
 import com.example.fd.entity.User;
 import com.example.fd.repository.UserRepository;
@@ -25,19 +26,19 @@ public class UserService {
 
     public UserDTO createUser(UserDTO userDTO){
 
-        User user = modelMapper.map(userDTO, User.class);
+        User user = AutoMapper.MAPPER.mapToUser(userDTO);
         userRepository.save(user);
-        return modelMapper.map(user, UserDTO.class);
+        return AutoMapper.MAPPER.mapToUserDTO(user);
     }
 
     public List<UserDTO> getAllUsers(){
         List<User> users = userRepository.findAll();
-        return users.stream().map(user -> modelMapper.map(user, UserDTO.class)).collect(Collectors.toUnmodifiableList());
+        return users.stream().map(AutoMapper.MAPPER::mapToUserDTO).collect(Collectors.toUnmodifiableList());
     }
 
     public UserDTO getUserByID(Long id){
         Optional<User> user = userRepository.findById(id);
-        return modelMapper.map(userRepository.findById(id).get(), UserDTO.class);
+        return AutoMapper.MAPPER.mapToUserDTO(userRepository.findById(id).get());
     }
 
     public UserDTO updateUserById(Long id, UserDTO userDTO){
@@ -46,7 +47,7 @@ public class UserService {
         existingUser.setLastName(userDTO.getLastName());
         existingUser.setEmail(userDTO.getEmail());
         userRepository.save(existingUser);
-        return modelMapper.map(existingUser, UserDTO.class);
+        return AutoMapper.MAPPER.mapToUserDTO(existingUser);
     }
 
     public void deleteUserById(Long id){
