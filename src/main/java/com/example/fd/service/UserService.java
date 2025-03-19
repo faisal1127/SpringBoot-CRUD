@@ -5,6 +5,7 @@ import com.example.fd.Mapper.UserMapper;
 import com.example.fd.entity.User;
 import com.example.fd.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,21 +20,24 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     public UserDTO createUser(UserDTO userDTO){
 
-        User user = UserMapper.converttoUser(userDTO);
+        User user = modelMapper.map(userDTO, User.class);
         userRepository.save(user);
-        return UserMapper.converttoUserDTO(user);
+        return modelMapper.map(user, UserDTO.class);
     }
 
     public List<UserDTO> getAllUsers(){
         List<User> users = userRepository.findAll();
-        return users.stream().map(UserMapper::converttoUserDTO).collect(Collectors.toUnmodifiableList());
+        return users.stream().map(user -> modelMapper.map(user, UserDTO.class)).collect(Collectors.toUnmodifiableList());
     }
 
     public UserDTO getUserByID(Long id){
         Optional<User> user = userRepository.findById(id);
-        return UserMapper.converttoUserDTO(userRepository.findById(id).get());
+        return modelMapper.map(userRepository.findById(id).get(), UserDTO.class);
     }
 
     public UserDTO updateUserById(Long id, UserDTO userDTO){
@@ -42,7 +46,7 @@ public class UserService {
         existingUser.setLastName(userDTO.getLastName());
         existingUser.setEmail(userDTO.getEmail());
         userRepository.save(existingUser);
-        return UserMapper.converttoUserDTO(existingUser);
+        return modelMapper.map(existingUser, UserDTO.class);
     }
 
     public void deleteUserById(Long id){
