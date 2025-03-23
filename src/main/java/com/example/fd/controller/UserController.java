@@ -4,6 +4,7 @@ import com.example.fd.DTO.UserDTO;
 import com.example.fd.Exceptions.ErrorDetails;
 import com.example.fd.Exceptions.ResourceNotFoundException;
 import com.example.fd.service.UserService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO user){
+    public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserDTO user){
         UserDTO newUserDTO = userService.createUser(user);
         return new ResponseEntity<>(newUserDTO, HttpStatus.CREATED);
     }
@@ -39,7 +40,7 @@ public class UserController {
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUserById(@PathVariable Long id, @RequestBody UserDTO userDTO){
+    public ResponseEntity<UserDTO> updateUserById(@PathVariable Long id, @Valid @RequestBody UserDTO userDTO){
         UserDTO updatedUserDTO = userService.updateUserById(id,userDTO);
         return new ResponseEntity<>(updatedUserDTO, HttpStatus.OK);
     }
