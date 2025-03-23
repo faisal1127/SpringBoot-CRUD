@@ -1,13 +1,17 @@
 package com.example.fd.controller;
 
 import com.example.fd.DTO.UserDTO;
+import com.example.fd.Exceptions.ErrorDetails;
+import com.example.fd.Exceptions.ResourceNotFoundException;
 import com.example.fd.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -44,5 +48,4 @@ public class UserController {
         userService.deleteUserById(id);
         return new ResponseEntity<>("User Deleted Successfully", HttpStatus.NO_CONTENT);
     }
-
 }
